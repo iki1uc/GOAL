@@ -35,7 +35,7 @@ class CallPipeline {
             cplus: this.cplus
         };
     }
-
+ 
     // HWpipeline12 (12 Schritte)
     pipeline12(stage){
         const chain = [];
