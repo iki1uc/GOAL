@@ -1,6 +1,8 @@
 class A81_AXIS {
 
-    constructor(){
+    constructor() {
+        this.size = 9;
+
         this.matrix = [];
         this.pipe3  = [];
         this.pipe6  = [];
@@ -9,43 +11,37 @@ class A81_AXIS {
         this.octa   = [];
     }
 
-    // QI – reine Index-Schaltung
-    qi(r, c){
-        return r * 9 + c;
+    // --- VALIDATION ---
+    validateIndex(r, c) {
+        if (r < 0 || c < 0 || r >= this.size || c >= this.size) {
+            throw new Error(`Index out of range: r=${r}, c=${c}`);
+        }
     }
 
-    // IQQ – 3-Zustands-Schaltung
-    iqq(r, c){
+    // --- QI – reine Index-Schaltung ---
+    qi(r, c) {
+        this.validateIndex(r, c);
+        return r * this.size + c;
+    }
+
+    // --- IQQ – 3-Zustands-Schaltung ---
+    iqq(r, c) {
         return this.qi(r, c) % 3;
     }
 
-    // OCTA – 8-Wege-Intelligenz
-    octaRoute(qi){
+    // --- OCTA – 8-Wege-Intelligenz ---
+    octaRoute(qi) {
         return qi % 8;
     }
 
-    // PIPE 3 – tri-routing
-    pipeTri(qi){
-        return qi % 3;
-    }
+    // --- PIPELINES ---
+    pipeTri(qi)  { return qi % 3; }
+    pipeHex(qi)  { return qi % 6; }
+    pipeNon(qi)  { return qi % 9; }
+    pipeDode(qi) { return qi % 12; }
 
-    // PIPE 6 – hex-routing
-    pipeHex(qi){
-        return qi % 6;
-    }
-
-    // PIPE 9 – non-routing
-    pipeNon(qi){
-        return qi % 9;
-    }
-
-    // PIPE 12 – dodeca-routing
-    pipeDode(qi){
-        return qi % 12;
-    }
-
-    // MASTER-MATRIX erzeugen
-    build(){
+    // --- MASTER-MATRIX ---
+    build() {
         this.matrix = [];
         this.pipe3  = [];
         this.pipe6  = [];
@@ -53,17 +49,12 @@ class A81_AXIS {
         this.pipe12 = [];
         this.octa   = [];
 
-        for(let r=0; r<9; r++){
-            let row = [];
-            let p3  = [];
-            let p6  = [];
-            let p9  = [];
-            let p12 = [];
-            let oc  = [];
+        for (let r = 0; r < this.size; r++) {
+            let row = [], p3 = [], p6 = [], p9 = [], p12 = [], oc = [];
 
-            for(let c=0; c<9; c++){
-                let qi  = this.qi(r, c);
-                let iqq = this.iqq(r, c);
+            for (let c = 0; c < this.size; c++) {
+                const qi  = this.qi(r, c);
+                const iqq = this.iqq(r, c);
 
                 row.push(iqq);
                 p3.push(this.pipeTri(qi));
