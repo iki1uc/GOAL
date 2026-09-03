@@ -1,30 +1,34 @@
 class MAC {
 
     constructor(){
-        this.back = null;        // Rückimpuls
-        this.mode = "BACK";      // später CALLBACK
-        this.cplus = 1.0;        // Korrektor
+        this.cplus = 1.0;      // Korrektor
+        this.back = null;      // Rückimpuls
+        this.mode = "BACK";    // später CALLBACK
     }
 
     // c+ setzen
     setCPlus(v){
         this.cplus = v;
+        return this.cplus;
     }
 
-    // MAC empfängt ClockHW.compute()
+    // ClockHW.compute → MAC.receive
     receive(timeValue){
-        // Hinterkopf = Zeitwert korrigiert
-        this.back = timeValue * this.cplus;
+        // c+ wirkt hier: wenn nicht mehr geht → mach weniger
+        const corrected = timeValue * this.cplus;
+
+        this.back = corrected;
 
         return {
             mode: this.mode,
             raw: timeValue,
-            corrected: this.back,
-            directive: ClockHW.directive(this.back)
+            corrected: corrected,
+            directive: ClockHW.directive(corrected),
+            cplus: this.cplus
         };
     }
 
-    // später wird das ein echter Callback
+    // später echter Callback
     callback(stage){
         return stage * this.cplus;
     }
