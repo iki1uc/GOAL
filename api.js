@@ -1,20 +1,8 @@
-// 81_81_1 / api.js
-
-import { geoAxes, geoLAGE } from "./geo.js";
-import cubes from "./cubes.json" assert { type: "json" };
-
-export function getCube(n) {
-    const c = cubes.cubes[n];
+export function applyCPlus(c, cplus){
     return {
-        axes: geoAxes(c.Phi, c.phi, c.phi2, c.phiinfty),
-        lage: geoLAGE(c.Phi, c.phi, c.phi2, c.phiinfty)
+        Phi:      c.Phi      * cplus,
+        phi:      c.phi      * cplus,
+        phi2:     c.phi2     * cplus,
+        phiinfty: c.phiinfty * cplus
     };
 }
-
-export function getAllCubes() {
-    return cubes.cubes.map(c => ({
-        axes: geoAxes(c.Phi, c.phi, c.phi2, c.phiinfty),
-        lage: geoLAGE(c.Phi, c.phi, c.phi2, c.phiinfty)
-    }));
-}
-
