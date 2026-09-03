@@ -43,3 +43,4 @@ class Hit3to90 {
 }
 
 window.Hit3to90 = new Hit3to90();
+this.hit = MassHW.calcImpuls(this.hit);
