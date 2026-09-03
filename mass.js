@@ -1,42 +1,53 @@
 class MassHW {
 
     constructor(){
-        this.masse = 1;
-        this.dichte = 1;
+        this.m = 1;        // Masse
+        this.v = 0;        // Geschwindigkeit
+        this.t = 1;        // Zeit
         this.impuls = 0;
         this.kraft = 0;
         this.energie = 0;
-        this.gradient = 1;
+        this.accel = 0;    // Beschleunigung
+        this.element = "ICE"; // ICE / FEUER
     }
 
-    // Masse berechnen
-    setMasse(m, d){
-        this.masse = m;
-        this.dichte = d;
+    setElement(element){
+        this.element = element;
     }
 
-    // Impuls berechnen
-    calcImpuls(geschwindigkeit){
-        this.impuls = this.masse * geschwindigkeit;
-        return this.impuls;
+    setValues(m, v, t){
+        this.m = m;
+        this.v = v;
+        this.t = t;
     }
 
-    // Kraft berechnen
-    calcKraft(zeit){
-        this.kraft = this.impuls / zeit;
-        return this.kraft;
-    }
+    compute(){
+        // Impuls
+        this.impuls = this.m * this.v;
 
-    // Energie berechnen
-    calcEnergie(zeit){
-        this.energie = this.kraft * zeit;
-        return this.energie;
-    }
+        // Kraft
+        this.kraft = this.impuls / this.t;
 
-    // Zeitkrümmung
-    calcGradient(zeit, kurve){
-        this.gradient = Math.pow(zeit, kurve);
-        return this.gradient;
+        // Energie
+        this.energie = this.kraft * this.t;
+
+        // Beschleunigung
+        this.accel = this.energie / this.m;
+
+        // ICE stabilisiert, FEUER verstärkt
+        if(this.element === "ICE"){
+            this.accel *= 0.8;
+        } else {
+            this.accel *= 1.2;
+        }
+
+        return {
+            impuls: this.impuls,
+            kraft: this.kraft,
+            energie: this.energie,
+            accel: this.accel,
+            element: this.element
+        };
     }
 }
 
