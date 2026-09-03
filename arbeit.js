@@ -5,11 +5,19 @@ class Arbeit {
         this.mode = "CALL";      // CALL oder RECALL
         this.pipe = null;        // Pipeline-Name
         this.result = null;      // Ergebnis
+        this.cplus = 1.0;        // c+ = Korrektor
+        this.mass = null;        // MassHW-Objekt
+    }
+
+    // c+ setzen
+    setCPlus(value){
+        this.cplus = value;
+        return this.cplus;
     }
 
     // Stage setzen
     setStage(stage){
-        this.stage = stage;
+        this.stage = stage * this.cplus;   // c+ wirkt hier
     }
 
     // CALL-Pipelines
@@ -62,20 +70,23 @@ class Arbeit {
         return this.result;
     }
 
+    // MassHW koppeln
+    attachMassHW(mass){
+        this.mass = mass;
+        return this.mass;
+    }
+
     // Ergebnis abrufen
     getResult(){
-        return this.result;
+        return {
+            mode: this.mode,
+            pipe: this.pipe,
+            stage: this.stage,
+            result: this.result,
+            cplus: this.cplus,
+            mass: this.mass
+        };
     }
 }
 
 window.Arbeit = new Arbeit();
-const t = TimeHW.update();
-const z = ClockHW.compute(t.delta);
-
-MassHW.setMasse(1, 1);
-MassHW.calcImpuls(z);
-MassHW.calcKraft(z);
-MassHW.calcEnergie(z);
-MassHW.calcGradient(z, ClockHW.curve);
-
-Arbeit.mass = MassHW;
