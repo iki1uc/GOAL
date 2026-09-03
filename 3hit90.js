@@ -3,44 +3,75 @@ class Hit3to90 {
     constructor(){
         this.stage = 3;          // Startstage
         this.hit = 0;            // Impact-Wert
-        this.threshold = 90;     // 90er Schwellwert
         this.element = "ICE";    // ICE / FEUER
-        this.honor = "0%";       // Ruhm-Level
+        this.honor = "0%";       // 1% - 100%
+        this.cplus = 1.0;        // c+ = Korrektor
+    }
+
+    // Korrektor setzen
+    setCPlus(value){
+        this.cplus = value;
     }
 
     // Werte aus Urne übernehmen
     loadFromUrne(entry){
-        this.element = entry.element;   // ICE / FEUER
-        this.honor = entry.honor;       // 1% - 100%
+        this.element = entry.element;
+        this.honor = entry.honor;
     }
 
-    // Impact berechnen
+    // Impact berechnen (Honor + ICE/FEUER + c+)
     calculateHit(){
-        const honorValue = parseInt(this.honor); // z.B. "42%" → 42
+        const honorValue = parseInt(this.honor);
 
-        // FEUER verstärkt, ICE stabilisiert
+        let baseHit = honorValue;
+
         if(this.element === "FEUER"){
-            this.hit = honorValue * 1.2;     // 20% Boost
+            baseHit *= 1.2;      // Verstärkung
         } else {
-            this.hit = honorValue * 0.8;     // 20% Stabilisierung
+            baseHit *= 0.8;      // Stabilisierung
         }
+
+        // c+ Korrektor anwenden
+        this.hit = baseHit * this.cplus;
 
         return this.hit;
     }
 
-    // Übergabe prüfen
+    // MassHWTranswarp einbauen
+    applyMass(){
+        MassHWTranswarp.set(
+            this.stage,          // Masse = Stage
+            this.hit,            // Geschwindigkeit = Impact
+            TimeHW.delta         // Zeit = Delta
+        );
+
+        MassHWTranswarp.setElement(this.element);
+
+        const mass = MassHWTranswarp.compute();
+        this.hit = mass.accel;   // Beschleunigung ersetzt Impact
+
+        return mass;
+    }
+
+    // Übergabe prüfen (Transwarp statt 90-Grenze)
     evaluate(){
-        const hitValue = this.calculateHit();
+        this.calculateHit();
+        const mass = this.applyMass();
+
+        const next = TranswarpStage.next();   // Stage * 3
 
         return {
             stage: this.stage,
-            hit: hitValue,
-            threshold: this.threshold,
-            pass: hitValue >= this.threshold,   // Übergabe zu Stage 9?
-            nextStage: hitValue >= this.threshold ? 9 : 3
+            hit: this.hit,
+            accel: mass.accel,
+            impuls: mass.impuls,
+            kraft: mass.kraft,
+            energie: mass.energie,
+            nextStage: next,
+            element: this.element,
+            cplus: this.cplus
         };
     }
 }
 
 window.Hit3to90 = new Hit3to90();
-this.hit = MassHW.calcImpuls(this.hit);
