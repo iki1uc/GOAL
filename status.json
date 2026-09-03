@@ -1,6 +1,15 @@
 {
-  "repo": "81_81_1",
-  "status": "OK",
-  "mode": "SONNE",
-  "needsMaintenance": false
+  "repo": "goal(ice)",
+  "status": "zündung",
+  "mode": "goal(feuer)",
+  "needsMaintenance": "sli.mode",
+
+  "order": {
+    "pyramide": {
+      "air64": "axis.out",
+      "aiv64": "axis.in"
+    },
+    "wuerfel128": "core.mastermind",
+    "pipeline": "cube.pipeline"
+  }
 }
