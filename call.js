@@ -49,3 +49,4 @@ class CallPipeline {
 }
 
 window.Call = new CallPipeline();
+const impulse = MassHW.calcImpuls(ClockHW.speed);
