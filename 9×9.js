@@ -9,6 +9,14 @@ class A81_AXIS {
         this.pipe9  = [];
         this.pipe12 = [];
         this.octa   = [];
+
+        this.cplus = 1.0;   // c+ = Korrektor
+    }
+
+    // c+ setzen
+    setCPlus(value){
+        this.cplus = value;
+        return this.cplus;
     }
 
     // --- VALIDATION ---
@@ -56,12 +64,21 @@ class A81_AXIS {
                 const qi  = this.qi(r, c);
                 const iqq = this.iqq(r, c);
 
-                row.push(iqq);
-                p3.push(this.pipeTri(qi));
-                p6.push(this.pipeHex(qi));
-                p9.push(this.pipeNon(qi));
-                p12.push(this.pipeDode(qi));
-                oc.push(this.octaRoute(qi));
+                // c+ Korrektor anwenden
+                const qi_c   = qi   * this.cplus;
+                const iqq_c  = iqq  * this.cplus;
+                const octa_c = this.octaRoute(qi) * this.cplus;
+                const p3_c   = this.pipeTri(qi)   * this.cplus;
+                const p6_c   = this.pipeHex(qi)   * this.cplus;
+                const p9_c   = this.pipeNon(qi)   * this.cplus;
+                const p12_c  = this.pipeDode(qi)  * this.cplus;
+
+                row.push(iqq_c);
+                p3.push(p3_c);
+                p6.push(p6_c);
+                p9.push(p9_c);
+                p12.push(p12_c);
+                oc.push(octa_c);
             }
 
             this.matrix.push(row);
@@ -78,7 +95,8 @@ class A81_AXIS {
             pipe6: this.pipe6,
             pipe9: this.pipe9,
             pipe12: this.pipe12,
-            octa: this.octa
+            octa: this.octa,
+            cplus: this.cplus
         };
     }
 }
