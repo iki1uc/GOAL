@@ -44,3 +44,4 @@ class RecallPipeline {
 }
 
 window.Recall = new RecallPipeline();
+const energy = MassHW.calcEnergie(TimeHW.delta);
