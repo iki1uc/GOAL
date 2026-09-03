@@ -3,6 +3,13 @@ class SLICE_3x1 {
     constructor(){
         this.size = 3;
         this.line = [];
+        this.cplus = 1.0;     // c+ = Korrektor
+    }
+
+    // c+ setzen
+    setCPlus(value){
+        this.cplus = value;
+        return this.cplus;
     }
 
     // QI – reine Index-Schaltung
@@ -28,7 +35,7 @@ class SLICE_3x1 {
         return qi % 3;
     }
 
-    // BUILD – erzeugt die 3×1 Linie
+    // BUILD – erzeugt die 3×1 Linie (mit c+)
     build(){
         this.line = [];
 
@@ -36,11 +43,18 @@ class SLICE_3x1 {
             const qi  = this.qi(i);
             const iqq = this.iqq(i);
 
+            // c+ Korrektor anwenden
+            const qi_c   = qi  * this.cplus;
+            const iqq_c  = iqq * this.cplus;
+            const octa_c = this.octaRoute(qi) * this.cplus;
+            const pipe_c = this.pipeTri(qi) * this.cplus;
+
             this.line.push({
-                qi: qi,
-                iqq: iqq,
-                octa: this.octaRoute(qi),
-                pipe3: this.pipeTri(qi)
+                qi: qi_c,
+                iqq: iqq_c,
+                octa: octa_c,
+                pipe3: pipe_c,
+                cplus: this.cplus
             });
         }
 
