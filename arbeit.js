@@ -69,3 +69,13 @@ class Arbeit {
 }
 
 window.Arbeit = new Arbeit();
+const t = TimeHW.update();
+const z = ClockHW.compute(t.delta);
+
+MassHW.setMasse(1, 1);
+MassHW.calcImpuls(z);
+MassHW.calcKraft(z);
+MassHW.calcEnergie(z);
+MassHW.calcGradient(z, ClockHW.curve);
+
+Arbeit.mass = MassHW;
