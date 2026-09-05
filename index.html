@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌀 RESPO‑SCHALTUNG · ATALARDAN · GRAVITATION · 9 ORDNER</title>
+
+  <style>
+    /* ============================================================
+       GRUNDLAYOUT
+       ============================================================ */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: radial-gradient(ellipse at 20% 30%, #0a0e1a, #000000);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', 'Consolas', monospace;
+      padding: 12px;
+      color: #c0d0d0;
+    }
+
+    .container {
+      max-width: 1400px;
+      width: 100%;
+      background: rgba(6, 8, 16, 0.6);
+      backdrop-filter: blur(4px);
+      border-radius: 40px;
+      padding: 20px 24px 26px;
+      border: 1px solid rgba(160, 200, 240, 0.05);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 0 80px rgba(100, 180, 255, 0.02);
+    }
+
+    /* ============================================================
+       KOPFZEILE
+       ============================================================ */
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(160, 200, 240, 0.06);
+      padding-bottom: 8px;
+      margin-bottom: 14px;
+    }
+    .header h1 {
+      font-size: 22px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #e0e8f0, #b0c8d8, #8098b0, #c0d8e8, #b388ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header h1 small {
+      font-size: 11px;
+      letter-spacing: 2px;
+      -webkit-text-fill-color: #4a5a6a;
+      color: #4a5a6a;
+    }
+    .status-leds {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      color: #5a7a8a;
+      flex-wrap: wrap;
+    }
+    .status-leds span { display: flex; align-items: center; gap: 5px; }
+    .led {
+      display: inline-block; width: 9px; height: 9px;
+      border-radius: 50%; background: #2a4a5a; transition: 0.3s;
+    }
+    .led.on   { background: #8cf0d0; box-shadow: 0 0 12px #8cf0d0; }
+    .led.pulse{ background: #f0d080; animation: pulse 1.2s infinite; }
+    .led.off  { background: #2a4a5a; }
+    @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(0.8)} 50%{opacity:1;transform:scale(1.2)} }
+
+    /* ============================================================
+       HAUPTRASTER
+       ============================================================ */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 8px 0 16px;
+    }
+    @media (max-width: 1000px) {
+      .main-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ---- Linkes Panel: Module ---- */
+    .modul-panel {
+      background: rgba(0,0,0,0.2);
+      border-radius: 20px;
+      padding: 14px 16px;
+      border: 1px solid rgba(100, 180, 255, 0.03);
+    }
+    .modul-panel h3 {
+      font-size: 12px;
+      color: #f0d080;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(255,215,0,0.04);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+    }
+    .grid-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 600px) {
+      .grid-3x3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    .modul {
+      background: rgba(10, 14, 20, 0.5);
+      border: 1px solid rgba(100, 180, 255, 0.06);
+      border-radius: 14px;
+      padding: 10px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      backdrop-filter: blur(2px);
+    }
+    .modul:hover { border-color: rgba(160, 200, 240, 0.15); transform: translateY(-2px); }
+    .modul .icon { font-size: 26px; line-height: 1.2; }
+    .modul .name { font-size: 11px; font-weight: 500; color: #d0e0e8; letter-spacing: 0.5px; margin-top: 2px; }
+    .modul .status-tag {
+      font-size: 7px; padding: 1px 10px; border-radius: 12px;
+      margin: 3px 0 4px; background: rgba(0,0,0,0.2);
+      border: 1px solid transparent; display: inline-block;
+    }
+    .modul .status-tag.stabil { border-color: #8cf0d0; color: #8cf0d0; }
+    .modul .status-tag.beta   { border-color: #f0d080; color: #f0d080; }
+    .modul .status-tag.alpha  { border-color: #ff6b6b; color: #ff6b6b; }
+    .modul .messwert { font-size: 11px; color: #70c8ff; font-weight: bold; }
+    .modul .toggle-switch {
+      display: inline-block;
+      width: 28px; height: 14px;
+      background: #1a2a3a;
+      border-radius: 30px;
+      position: relative;
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid rgba(100,180,255,0.05);
+      margin-top: 3px;
+    }
+    .modul .toggle-switch .knob {
+      width: 10px; height: 10px;
+      background: #4a6a7a;
+      border-radius: 50%;
+      position: absolute;
+      top: 1px; left: 2px;
+      transition: 0.25s;
+    }
+    .modul .toggle-switch.on { background: #1a4a3a; border-color: #8cf0d0; }
+    .modul .toggle-switch.on .knob { left: 15px; background: #8cf0d0; box-shadow: 0 0 10px #8cf0d0; }
+    .modul.ausgewaehlt { border-color: #f0d080; box-shadow: 0 0 20px rgba(255,215,0,0.08); }
+
+    .conn-bar {
+      font-size: 8px; color: #445555; margin-top: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .conn-bar .conn { color: #70c8ff; }
+
+    /* ---- Rechtes Panel: Simulation ---- */
+    .sim-panel {
+      background: rgba(0,0,0,0.2);
+      border-radius: 20px;
+      padding: 14px 16px;
+      border: 1px solid rgba(100, 180, 255, 0.03);
+      display: flex;
+      flex-direction: column;
+    }
+    .sim-panel h3 {
+      font-size: 12px;
+      color: #b388ff;
+      letter-spacing: 2px;
+      border-bottom: 1px solid rgba(179,136,255,0.04);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .sim-panel h3 span { font-weight: normal; color: #5a7a8a; font-size: 10px; }
+
+    .canvas-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #030508;
+      border: 1px solid rgba(100, 180, 255, 0.04);
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      min-height: 240px;
+      flex-shrink: 0;
+    }
+    .canvas-wrap canvas { display: block; width: 100%; height: 100%; }
+
+    /* ---- Slider ---- */
+    .slider-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin: 8px 0 4px;
+    }
+    @media (max-width: 700px) {
+      .slider-row { grid-template-columns: 1fr; gap: 6px; }
+    }
+    .slider-item { display: flex; flex-direction: column; gap: 2px; }
+    .slider-item .label { display: flex; justify-content: space-between; font-size: 10px; color: #5a7a8a; }
+    .slider-item .label .wert { color: #c0d8e8; font-weight: bold; }
+    .slider-item input[type="range"] {
+      width: 100%; height: 4px;
+      -webkit-appearance: none; appearance: none;
+      background: #1a2a3a; border-radius: 4px; outline: none;
+    }
+    .slider-item input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: #70c8ff; cursor: pointer;
+      box-shadow: 0 0 10px rgba(100,200,255,0.15);
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0; }
+    button {
+      background: rgba(20, 28, 36, 0.4);
+      border: 1px solid rgba(120, 160, 190, 0.06);
+      color: #9ab0c0;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    button:hover { background: rgba(40, 70, 90, 0.2); border-color: rgba(160, 200, 240, 0.1); color: #d0e8f8; }
+    button.primary { border-color: rgba(255, 215, 0, 0.1); color: #f0d080; }
+    button.primary:hover { background: rgba(255, 215, 0, 0.04); }
+    button.nc { border-color: rgba(68, 255, 68, 0.1); color: #4f4; }
+    button.nc:hover { background: rgba(68, 255, 68, 0.04); }
+    button.danger { border-color: rgba(255, 80, 80, 0.08); color: #d06060; }
+    button.danger:hover { background: rgba(255, 80, 80, 0.04); }
+
+    .log-box {
+      background: rgba(0,0,0,0.25);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 7px;
+      color: #4a5a6a;
+      max-height: 60px;
+      overflow-y: auto;
+      line-height: 1.4;
+      border: 1px solid rgba(100, 180, 255, 0.02);
+      margin-top: 4px;
+      font-family: 'Consolas', monospace;
+      flex-shrink: 0;
+    }
+    .log-box .entry { border-bottom: 1px solid rgba(100,180,255,0.02); padding: 1px 0; }
+    .log-box .time { color: #2a3a4a; }
+    .log-box .msg { color: #8ab0c0; }
+    .log-box .msg.grav { color: #b388ff; }
+    .log-box .msg.nc   { color: #4f4; }
+    .log-box .msg.conn { color: #70c8ff; }
+
+    .footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 12px;
+      padding: 6px 12px;
+      background: rgba(0,0,0,0.15);
+      border-radius: 12px;
+      border: 1px solid rgba(100,180,255,0.02);
+      font-size: 9px;
+      color: #3a4a5a;
+    }
+    .footer .gold { color: #f0d080; }
+    .footer .stat { display: flex; align-items: center; gap: 4px; }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: #080c12; }
+    ::-webkit-scrollbar-thumb { background: #1a2a3a; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🧿 RESPO‑SCHALTUNG · ATALARDAN <small>9 ORDNER · GRAVITATION</small></h1>
+    <div class="status-leds">
+      <span><span class="led on" id="ledSystem"></span> SYSTEM</span>
+      <span><span class="led pulse" id="ledSim"></span> SIMULATION</span>
+      <span><span class="led" id="ledConn"></span> VERBINDUNG</span>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="modul-panel">
+      <h3>🔷 9 ORDNER · SCHALTER</h3>
+      <div class="grid-3x3" id="modulGrid"></div>
+      <div style="display:flex; gap:12px; margin-top:10px; font-size:9px; color:#5a7a8a; flex-wrap:wrap; justify-content:center;">
+        <span>📊 Messwert · 🔘 Ein/Aus</span>
+        <span>🔗 <span id="connCount">0</span> Verbindungen</span>
+      </div>
+    </div>
+
+    <div class="sim-panel">
+      <h3>🌀 ATALARDAN · GRAVITATION <span id="simStatus">● läuft</span></h3>
+
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="universeCanvas"></canvas>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-item">
+          <div class="label"><span>⚙️ ACHSE</span><span class="wert" id="wertAchse">50</span></div>
+          <input type="range" id="sliderAchse" min="0" max="100" value="50">
+        </div>
+        <div class="slider-item">
+          <div class="label"><span>💧 FLUID (GRAV)</span><span class="wert" id="wertFluid">50</span></div>
+          <input type="range" id="sliderFluid" min="0" max="100" value="50">
+        </div>
+        <div class="slider-item">
+          <div class="label"><span>★ DS9 (LOOP)</span><span class="wert" id="wertDs9">50</span></div>
+          <input type="range" id="sliderDs9" min="0" max="100" value="50">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="primary" id="btnStart">⏸ STOP</button>
+        <button class="nc" id="btnNC">◈ NC</button>
+        <button id="btnLoop">🔄 LOOP</button>
+        <button id="btnAxis">✧ AXIS</button>
+        <button id="btnGrav">🌀 GRAV</button>
+        <button class="danger" id="btnReset">⟲ RESET</button>
+      </div>
+
+      <div class="log-box" id="logBox">
+        <div class="entry"><span class="time">[INIT]</span> <span class="msg grav">🌊 ATALARDAN · Gravitations‑Universum geladen</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <span class="stat"><span class="gold">★</span> 9 Module · 81.tmp · A81‑FUSION</span>
+    <span class="stat">⌨️ space=Start  1=NC  2=LOOP  3=AXIS  4=Grav  x=Reset</span>
+    <span class="stat">🔷 <span id="footerActive">0</span>/9 aktiv</span>
+  </div>
+
+</div>
+
+<script>
+"use strict";
+/* ================================================================
+   RESPO-SCHALTUNG · ATALARDAN
+   Struktur:
+     1. CONFIG      – feste Konstanten (Module, Achsen, Loops, Farben)
+     2. STATE       – veränderlicher Zustand (Module + Simulation)
+     3. DOM-CACHE   – einmaliges Einsammeln der DOM-Referenzen
+     4. CANVAS      – Setup, Partikel, Sterne
+     5. SIMULATION  – Update-Schritt pro Frame
+     6. RENDER      – Zeichnen pro Frame
+     7. MODULE-UI   – Schalter, Verbindungen, Rendering der Kacheln
+     8. STEUERUNG   – Buttons, Slider, Tastatur
+     9. INIT        – Startsequenz
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   1. CONFIG
+   --------------------------------------------------------------- */
+const CONFIG = {
+  MODULES: [
+    { id: 'api',   icon: '🔌', name: 'API',   status: 'stabil', min: 40, spread: 60 },
+    { id: 'aura',  icon: '✨', name: 'AURA',  status: 'beta',   min: 30, spread: 70 },
+    { id: 'cpu',   icon: '💻', name: 'CPU',   status: 'stabil', min: 10, spread: 90 },
+    { id: 'down',  icon: '⬇️', name: 'DOWN',  status: 'stabil', min: 20, spread: 80 },
+    { id: 'mana',  icon: '🪄', name: 'MANA',  status: 'alpha',  min: 50, spread: 50 },
+    { id: 'rom.3', icon: '💾', name: 'ROM.3', status: 'beta',   min: 10, spread: 90 },
+    { id: 'rom.9', icon: '💿', name: 'ROM.9', status: 'beta',   min: 10, spread: 90 },
+    { id: 'up',    icon: '⬆️', name: 'UP',    status: 'stabil', min: 20, spread: 80 },
+    { id: 'zen',   icon: '🧘', name: 'ZEN',   status: 'alpha',  min: 40, spread: 60 }
+  ],
+  AXES: [
+    { key: 'a', color: '#ff6b6b' }, { key: 'd', color: '#6bff6b' },
+    { key: 'e', color: '#6b6bff' }, { key: 'i', color: '#ffd93d' },
+    { key: 'o', color: '#ff44ff' }, { key: 'r', color: '#6cf'    },
+    { key: 's', color: '#ff8c00' }, { key: 'w', color: '#4f4'    }
+  ],
+  LOOPS: [
+    { id: 1, role: 'init' }, { id: 2, role: 'flow' }, { id: 3, role: 'check' },
+    { id: 4, role: 'delta' }, { id: 8, role: 'orbit' }, { id: 9, role: 'final' }
+  ],
+  PARTICLE_MIN: 80,
+  PARTICLE_MAX: 350,
+  PARTICLE_PER_MODULE: 18,
+  STAR_COUNT: 350,
+  LOG_MAX_ENTRIES: 30
+};
+
+function randomInRange(min, spread) {
+  return Math.round(min + Math.random() * spread);
+}
+
+/* ---------------------------------------------------------------
+   2. STATE
+   --------------------------------------------------------------- */
+const modState = {
+  status: {},          // id -> boolean (an/aus)
+  messwerte: {},       // id -> Prozentwert
+  connections: [],     // [{a, b}]
+  selected: null,      // aktuell ausgewähltes Modul für Verbindung
+  params: { achse: 50, fluid: 50, ds9: 50 }
+};
+
+CONFIG.MODULES.forEach(m => {
+  modState.status[m.id] = true;
+  modState.messwerte[m.id] = randomInRange(m.min, m.spread);
+});
+
+const simState = {
+  running: true,
+  t: 0,
+  cycle: 0,
+  loopIndex: 0,
+  loopMod: 25,
+  gravStrength: 0.5,
+  particles: [],
+  stars: [],
+  axisValues: CONFIG.AXES.map((_, i) => i + 1),
+  ncActive: true
+};
+
+/* ---------------------------------------------------------------
+   3. DOM-CACHE
+   --------------------------------------------------------------- */
+const dom = {
+  canvas: document.getElementById('universeCanvas'),
+  modulGrid: document.getElementById('modulGrid'),
+  connCount: document.getElementById('connCount'),
+  ledSystem: document.getElementById('ledSystem'),
+  ledSim: document.getElementById('ledSim'),
+  ledConn: document.getElementById('ledConn'),
+  simStatus: document.getElementById('simStatus'),
+  logBox: document.getElementById('logBox'),
+  footerActive: document.getElementById('footerActive'),
+  btnStart: document.getElementById('btnStart'),
+  sliderFluid: document.getElementById('sliderFluid'),
+  wertFluid: document.getElementById('wertFluid')
+};
+const ctx = dom.canvas.getContext('2d');
+let W = 0, H = 0;
+
+/* ---------------------------------------------------------------
+   4. CANVAS: Setup, Partikel, Sterne
+   --------------------------------------------------------------- */
+function resizeCanvas() {
+  const rect = dom.canvas.parentElement.getBoundingClientRect();
+  dom.canvas.width = rect.width;
+  dom.canvas.height = rect.height;
+  W = dom.canvas.width;
+  H = dom.canvas.height;
+}
+
+function createParticle(distMin, distMax) {
+  const angle = Math.random() * 2 * Math.PI;
+  const dist = distMin + Math.random() * distMax;
+  return {
+    x: W / 2 + Math.cos(angle) * dist,
+    y: H / 2 + Math.sin(angle) * dist,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    size: 1.5 + Math.random() * 3,
+    hue: 200 + Math.random() * 60
+  };
+}
+
+function initParticles(n = 180) {
+  simState.particles = Array.from({ length: n }, () => createParticle(30, Math.min(W, H) * 0.35));
+}
+
+function initStars(n = CONFIG.STAR_COUNT) {
+  simState.stars = Array.from({ length: n }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    size: 0.5 + Math.random() * 1.5,
+    brightness: 0.3 + Math.random() * 0.7
+  }));
+}
+
+/* ---------------------------------------------------------------
+   5. SIMULATION: Update-Schritt
+   --------------------------------------------------------------- */
+function applyGravity() {
+  const cx = W / 2, cy = H / 2;
+  const strength = simState.gravStrength * 0.025;
+  for (const p of simState.particles) {
+    const dx = cx - p.x, dy = cy - p.y;
+    const dist = Math.hypot(dx, dy) || 1;
+    const force = strength / (dist * 0.08 + 1);
+    p.vx = (p.vx + (dx / dist) * force) * 0.997;
+    p.vy = (p.vy + (dy / dist) * force) * 0.997;
+    p.x += p.vx;
+    p.y += p.vy;
+
+    const m = p.size;
+    if (p.x < m)     { p.x = m;     p.vx *= -0.5; }
+    if (p.x > W - m) { p.x = W - m; p.vx *= -0.5; }
+    if (p.y < m)     { p.y = m;     p.vy *= -0.5; }
+    if (p.y > H - m) { p.y = H - m; p.vy *= -0.5; }
+  }
+}
+
+function updateParticlePool() {
+  const activeCount = countActiveModules();
+  const targetParticles = CONFIG.PARTICLE_MIN + activeCount * CONFIG.PARTICLE_PER_MODULE;
+
+  if (simState.particles.length < targetParticles && simState.cycle % 3 === 0) {
+    const p = createParticle(20, 50);
+    p.hue = 180 + Math.random() * 80;
+    simState.particles.push(p);
+  }
+  if (simState.particles.length > CONFIG.PARTICLE_MAX) {
+    simState.particles.splice(0, simState.particles.length - CONFIG.PARTICLE_MAX);
+  }
+}
+
+function updateAxisValues() {
+  const axisScale = modState.params.achse / 100;
+  const modFactor = countActiveModules() / CONFIG.MODULES.length;
+
+  simState.axisValues = simState.axisValues.map((_, i) => {
+    const base = 1 + i + axisScale * 8;
+    const value = base * (0.8 + 0.4 * modFactor) + Math.sin(simState.t * 0.02 + i * 0.5) * 0.5;
+    return Math.max(0.5, Math.min(12, value));
+  });
+}
+
+function updateLoopTiming() {
+  const ds9 = modState.params.ds9;
+  simState.loopMod = Math.max(5, Math.round(30 - (ds9 / 100) * 25));
+  if (simState.cycle % simState.loopMod === 0) {
+    simState.loopIndex = (simState.loopIndex + 1) % CONFIG.LOOPS.length;
+  }
+}
+
+function updateSimulation() {
+  if (!simState.running) return;
+
+  simState.t += 0.007;
+  simState.cycle++;
+
+  updateParticlePool();
+  applyGravity();
+  updateAxisValues();
+  updateLoopTiming();
+
+  dom.simStatus.textContent = simState.running ? '● läuft' : '⏸ pausiert';
+  dom.simStatus.style.color = simState.running ? '#8cf0d0' : '#ff6b6b';
+  dom.ledSim.className = 'led ' + (simState.running ? 'pulse' : 'off');
+}
+
+/* ---------------------------------------------------------------
+   6. RENDER: Zeichnen pro Frame
+   --------------------------------------------------------------- */
+function drawBackground() {
+  ctx.clearRect(0, 0, W, H);
+  const grad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.6);
+  grad.addColorStop(0, 'rgba(10,20,40,0.2)');
+  grad.addColorStop(0.5, 'rgba(5,10,20,0.5)');
+  grad.addColorStop(1, 'rgba(0,0,0,0.9)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function drawStars() {
+  for (const s of simState.stars) {
+    const alpha = s.brightness * (0.6 + 0.4 * Math.sin(simState.t * 0.02 + s.x));
+    ctx.fillStyle = `rgba(255,255,255,${alpha * 0.25})`;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+}
+
+function drawGravityWaves() {
+  for (let i = 0; i < 3; i++) {
+    const r = 40 + i * 60 + Math.sin(simState.t * 0.08 + i) * 12;
+    ctx.strokeStyle = `rgba(180,130,255,${0.015 + i * 0.008})`;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 8]);
+    ctx.beginPath();
+    ctx.arc(W / 2, H / 2, r + Math.sin(simState.t * 0.04 + i) * 8, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+function drawAxes() {
+  const rAxes = Math.min(W, H) * 0.30;
+  CONFIG.AXES.forEach((axis, i) => {
+    const angle = (i / CONFIG.AXES.length) * 2 * Math.PI - Math.PI / 2 + simState.t * 0.012;
+    const dist = rAxes * (0.5 + (simState.axisValues[i] / 12) * 0.5);
+    const x = W / 2 + Math.cos(angle) * dist;
+    const y = H / 2 + Math.sin(angle) * dist;
+
+    ctx.strokeStyle = axis.color + '33';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(W / 2, H / 2);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    ctx.shadowColor = axis.color;
+    ctx.shadowBlur = 12;
+    ctx.fillStyle = axis.color;
+    ctx.beginPath();
+    ctx.arc(x, y, 4 + 2 * Math.sin(simState.t * 0.015 + i), 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = '#b0c8d8';
+    ctx.font = '7px Consolas';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText(axis.key, x, y - 8);
+
+    ctx.fillStyle = '#4a5a6a';
+    ctx.font = '4px Consolas';
+    ctx.textBaseline = 'top';
+    ctx.fillText(simState.axisValues[i].toFixed(1), x, y + 8);
+  });
+}
+
+function drawLoopRing() {
+  const loopR = Math.min(W, H) * 0.14;
+  const loopIdx = simState.loopIndex % CONFIG.LOOPS.length;
+  const loop = CONFIG.LOOPS[loopIdx];
+
+  ctx.strokeStyle = 'rgba(255,107,107,0.06)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([2, 6]);
+  ctx.beginPath();
+  ctx.arc(W / 2, H / 2, loopR, 0, 2 * Math.PI);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  const angleLoop = (loopIdx / CONFIG.LOOPS.length) * 2 * Math.PI + simState.t * 0.018;
+  const lx = W / 2 + Math.cos(angleLoop) * loopR;
+  const ly = H / 2 + Math.sin(angleLoop) * loopR;
+
+  ctx.shadowColor = '#ff6b6b';
+  ctx.shadowBlur = 18;
+  ctx.fillStyle = '#ff6b6b';
+  ctx.beginPath();
+  ctx.arc(lx, ly, 5, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = '#ff6b6b';
+  ctx.font = '6px Consolas';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(`L${loop.id}`, lx, ly - 8);
+  ctx.fillStyle = '#4a5a6a';
+  ctx.font = '3px Consolas';
+  ctx.textBaseline = 'top';
+  ctx.fillText(loop.role, lx, ly + 6);
+
+  CONFIG.LOOPS.forEach((l, i) => {
+    const a = (i / CONFIG.LOOPS.length) * 2 * Math.PI + simState.t * 0.006;
+    const d = loopR * 0.85;
+    const px = W / 2 + Math.cos(a) * d;
+    const py = H / 2 + Math.sin(a) * d;
+    ctx.fillStyle = i === loopIdx ? '#ff6b6b' : '#2a3a4a';
+    ctx.font = i === loopIdx ? '5px Consolas' : '3px Consolas';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(l.id, px, py);
+  });
+}
+
+function drawCore() {
+  const coreR = Math.min(W, H) * 0.05;
+  const glow = ctx.createRadialGradient(W / 2 - 3, H / 2 - 3, 0, W / 2, H / 2, coreR * 2.2);
+  glow.addColorStop(0, '#8f8');
+  glow.addColorStop(0.3, '#4f4');
+  glow.addColorStop(1, 'rgba(68,255,68,0)');
+
+  ctx.shadowColor = '#4f4';
+  ctx.shadowBlur = 35;
+  ctx.fillStyle = glow;
+  ctx.beginPath();
+  ctx.arc(W / 2, H / 2, coreR * 2.2, 0, 2 * Math.PI);
+  ctx.fill();
+
+  ctx.shadowBlur = 15;
+  ctx.fillStyle = '#4f4';
+  ctx.beginPath();
+  ctx.arc(W / 2, H / 2, coreR, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  ctx.fillStyle = '#000';
+  ctx.font = 'bold 12px Consolas';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('NC', W / 2, H / 2 - 1);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.font = '5px Consolas';
+  ctx.textBaseline = 'top';
+  ctx.fillText('81.tmp', W / 2, H / 2 + coreR + 6);
+}
+
+function drawParticles() {
+  for (const p of simState.particles) {
+    const alpha = 0.3 + 0.7 * (p.size / 4);
+    ctx.shadowColor = `hsl(${p.hue}, 80%, 70%)`;
+    ctx.shadowBlur = 6;
+    ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${alpha * 0.5})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = `hsla(${p.hue}, 90%, 85%, ${alpha * 0.25})`;
+    ctx.beginPath();
+    ctx.arc(p.x - p.size * 0.2, p.y - p.size * 0.2, p.size * 0.3, 0, 2 * Math.PI);
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+}
+
+function drawInfoText() {
+  ctx.fillStyle = 'rgba(200,220,240,0.12)';
+  ctx.font = '7px Consolas';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText(
+    `Grav ${simState.gravStrength.toFixed(2)} · Partikel ${simState.particles.length} · Zyklus ${simState.cycle}`,
+    10, H - 6
+  );
+  ctx.textAlign = 'right';
+  ctx.fillText('ATALARDAN · A81-FUSION', W - 10, H - 6);
+}
+
+function render() {
+  drawBackground();
+  drawStars();
+  drawGravityWaves();
+  drawAxes();
+  drawLoopRing();
+  drawCore();
+  drawParticles();
+  drawInfoText();
+}
+
+/* ---------------------------------------------------------------
+   7. MODULE-UI: Schalter, Verbindungen, Kacheln
+   --------------------------------------------------------------- */
+function countActiveModules() {
+  return Object.values(modState.status).filter(Boolean).length;
+}
+
+function getModuleName(id) {
+  const m = CONFIG.MODULES.find(x => x.id === id);
+  return m ? m.name : id;
+}
+
+function logMessage(msg, type = 'grav') {
+  const cls = ['grav', 'nc', 'conn'].includes(type) ? type : 'grav';
+  const time = new Date().toLocaleTimeString();
+  dom.logBox.innerHTML += `<div class="entry"><span class="time">[${time}]</span> <span class="msg ${cls}">${msg}</span></div>`;
+  dom.logBox.scrollTop = dom.logBox.scrollHeight;
+  while (dom.logBox.children.length > CONFIG.LOG_MAX_ENTRIES) {
+    dom.logBox.removeChild(dom.logBox.firstChild);
+  }
+}
+
+function toggleModule(id) {
+  modState.status[id] = !modState.status[id];
+  const isOn = modState.status[id];
+
+  if (!isOn) {
+    modState.connections = modState.connections.filter(c => c.a !== id && c.b !== id);
+    if (modState.selected === id) modState.selected = null;
+    logMessage(`⛔ ${getModuleName(id)} aus`, 'conn');
+  } else {
+    const cfg = CONFIG.MODULES.find(m => m.id === id);
+    modState.messwerte[id] = randomInRange(cfg.min, cfg.spread);
+    logMessage(`✅ ${getModuleName(id)} an`, 'conn');
+  }
+
+  renderModules();
+}
+
+function handleModuleClick(id) {
+  if (!modState.status[id]) {
+    logMessage(`⚠️ ${getModuleName(id)} ist aus`, 'conn');
+    return;
+  }
+  if (modState.selected === null) {
+    modState.selected = id;
+    logMessage(`🔗 ${getModuleName(id)} ausgewählt`, 'conn');
+    renderModules();
+    return;
+  }
+  if (modState.selected === id) {
+    modState.selected = null;
+    logMessage('↩️ Auswahl aufgehoben', 'conn');
+    renderModules();
+    return;
+  }
+
+  const a = modState.selected, b = id;
+  const existingIndex = modState.connections.findIndex(
+    c => (c.a === a && c.b === b) || (c.a === b && c.b === a)
+  );
+  if (existingIndex >= 0) {
+    modState.connections.splice(existingIndex, 1);
+    logMessage(`🔗 Verbindung ${getModuleName(a)} ↔ ${getModuleName(b)} getrennt`, 'conn');
+  } else {
+    modState.connections.push({ a, b });
+    logMessage(`🔗 Verbindung ${getModuleName(a)} ↔ ${getModuleName(b)} hergestellt`, 'conn');
+  }
+  modState.selected = null;
+  renderModules();
+}
+
+function buildModuleTile(mod) {
+  const isOn = modState.status[mod.id];
+  const wert = modState.messwerte[mod.id] ?? 0;
+  const isSelected = modState.selected === mod.id;
+
+  const div = document.createElement('div');
+  div.className = 'modul' + (isSelected ? ' ausgewaehlt' : '');
+  div.innerHTML = `
+    <div class="icon">${mod.icon}</div>
+    <div class="name">${mod.name}</div>
+    <div class="status-tag ${mod.status}">${mod.status.toUpperCase()}</div>
+    <div class="messwert">${wert}%</div>
+    <div class="toggle-switch ${isOn ? 'on' : ''}"><div class="knob"></div></div>
+    <div class="conn-bar" id="conn-${mod.id}"></div>
+  `;
+
+  div.querySelector('.toggle-switch').addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleModule(mod.id);
+  });
+  div.addEventListener('click', (e) => {
+    if (e.target.closest('.toggle-switch')) return;
+    handleModuleClick(mod.id);
+  });
+
+  return div;
+}
+
+function renderConnectionBars() {
+  CONFIG.MODULES.forEach(mod => {
+    const el = document.getElementById(`conn-${mod.id}`);
+    if (!el) return;
+    const partners = modState.connections
+      .filter(c => c.a === mod.id || c.b === mod.id)
+      .map(c => getModuleName(c.a === mod.id ? c.b : c.a));
+    el.innerHTML = partners.length ? '🔗 ' + partners.join(' · ') : '';
+  });
+  dom.connCount.textContent = modState.connections.length;
+  dom.ledConn.className = 'led ' + (modState.connections.length > 0 ? 'on' : '');
+}
+
+function updateStatusLEDs() {
+  const anyOn = Object.values(modState.status).some(Boolean);
+  dom.ledSystem.className = 'led ' + (anyOn ? 'on' : 'off');
+}
+
+function renderModules() {
+  dom.modulGrid.innerHTML = '';
+  CONFIG.MODULES.forEach(mod => dom.modulGrid.appendChild(buildModuleTile(mod)));
+  renderConnectionBars();
+  updateStatusLEDs();
+  dom.footerActive.textContent = countActiveModules();
+}
+
+/* ---------------------------------------------------------------
+   8. STEUERUNG: Buttons, Slider, Tastatur
+   --------------------------------------------------------------- */
+function setupSliders() {
+  const sliderDefs = [
+    { id: 'sliderAchse', key: 'achse', displayId: 'wertAchse' },
+    { id: 'sliderFluid', key: 'fluid', displayId: 'wertFluid' },
+    { id: 'sliderDs9',   key: 'ds9',   displayId: 'wertDs9' }
+  ];
+
+  sliderDefs.forEach(({ id, key, displayId }) => {
+    const input = document.getElementById(id);
+    const display = document.getElementById(displayId);
+    input.addEventListener('input', () => {
+      const val = parseInt(input.value, 10);
+      modState.params[key] = val;
+      display.textContent = val;
+      if (key === 'fluid') simState.gravStrength = val / 100;
+    });
+  });
+
+  simState.gravStrength = modState.params.fluid / 100;
+}
+
+function toggleStart() {
+  simState.running = !simState.running;
+  dom.btnStart.textContent = simState.running ? '⏸ STOP' : '▶ START';
+  logMessage(simState.running ? '▶ Simulation gestartet' : '⏸ Simulation pausiert', 'grav');
+}
+
+function triggerNC() {
+  simState.ncActive = !simState.ncActive;
+  logMessage(`◈ NC · ${simState.ncActive ? 'aktiv' : 'inaktiv'}`, 'nc');
+}
+
+function triggerLoop() {
+  simState.loopIndex = (simState.loopIndex + 1) % CONFIG.LOOPS.length;
+  logMessage(`🔄 LOOP ${CONFIG.LOOPS[simState.loopIndex].id}`, 'grav');
+}
+
+function triggerAxis() {
+  const idx = Math.floor(Math.random() * CONFIG.AXES.length);
+  simState.axisValues[idx] = Math.min(12, simState.axisValues[idx] + 1 + Math.random() * 2);
+  logMessage(`✧ AXIS ${CONFIG.AXES[idx].key} auf ${simState.axisValues[idx].toFixed(1)}`, 'grav');
+}
+
+function toggleGrav() {
+  simState.gravStrength = simState.gravStrength < 0.9 ? simState.gravStrength + 0.1 : 0.1;
+  const val = Math.round(simState.gravStrength * 100);
+  dom.sliderFluid.value = val;
+  dom.wertFluid.textContent = val;
+  modState.params.fluid = val;
+  logMessage(`🌀 Gravitation auf ${simState.gravStrength.toFixed(2)}`, 'grav');
+}
+
+function resetAll() {
+  simState.running = true;
+  simState.t = 0;
+  simState.cycle = 0;
+  simState.loopIndex = 0;
+  simState.gravStrength = 0.5;
+  simState.axisValues = CONFIG.AXES.map((_, i) => i + 1);
+
+  initParticles(180);
+  initStars();
+
+  dom.sliderFluid.value = 50;
+  dom.wertFluid.textContent = '50';
+  modState.params.fluid = 50;
+  dom.btnStart.textContent = '⏸ STOP';
+
+  logMessage('⟲ RESET · Universum neu formatiert', 'grav');
+}
+
+function bindControls() {
+  document.getElementById('btnStart').addEventListener('click', toggleStart);
+  document.getElementById('btnNC').addEventListener('click', triggerNC);
+  document.getElementById('btnLoop').addEventListener('click', triggerLoop);
+  document.getElementById('btnAxis').addEventListener('click', triggerAxis);
+  document.getElementById('btnGrav').addEventListener('click', toggleGrav);
+  document.getElementById('btnReset').addEventListener('click', resetAll);
+
+  document.addEventListener('keydown', (e) => {
+    switch (e.key) {
+      case ' ':
+        e.preventDefault();
+        toggleStart();
+        break;
+      case '1': triggerNC(); break;
+      case '2': triggerLoop(); break;
+      case '3': triggerAxis(); break;
+      case '4': toggleGrav(); break;
+      case 'x': case 'X': resetAll(); break;
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    initParticles(180);
+    initStars();
+  });
+}
+
+/* ---------------------------------------------------------------
+   9. INIT
+   --------------------------------------------------------------- */
+function mainLoop() {
+  updateSimulation();
+  render();
+  requestAnimationFrame(mainLoop);
+}
+
+function init() {
+  resizeCanvas();
+  initParticles(200);
+  initStars(400);
+  renderModules();
+  setupSliders();
+  updateStatusLEDs();
+  bindControls();
+
+  logMessage('🌊 ATALARDAN · Gravitations‑Universum geladen', 'grav');
+  logMessage('⌨️ space=Start  1=NC  2=LOOP  3=AXIS  4=Grav  x=Reset', 'grav');
+
+  setTimeout(() => {
+    simState.running = true;
+    dom.btnStart.textContent = '⏸ STOP';
+    logMessage('▶ Auto‑Start · Universum erwacht', 'grav');
+  }, 400);
+
+  mainLoop();
+}
+
+init();
+</script>
+</body>
+</html>
